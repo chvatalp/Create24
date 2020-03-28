@@ -1,3 +1,5 @@
+package deprecated;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -73,4 +75,5 @@ public class CombinationOld {
     public static double[][] shuffleInput(double[] inputArray) {
         return new double[][]{inputArray, new double[] {inputArray[0], inputArray[2], inputArray[1], inputArray[3]}};
     }
+
 }

@@ -1,78 +1,56 @@
+import java.util.Objects;
+
 public class Operation {
-    private double operation;
+    private double value;
     private String operationString;
 
-    public Operation(double firstNumber, double secondNumber, String operator) {
-        // oprace na yaklade vstupnich udaju - operator a dva doubly nebo operace
+    public Operation(double value) {
+        // pro krajni hodnoty / pro zjednoduseni cele konstrukce tridy
+        this.value = value;
+        this.operationString = Double.toString(value);
+    }
+
+    public Operation(Operation first, Operation second, String operator) {
+        // operace na zaklade vstupnich udaju - operator a dve operace
         if (operator.equals("+")) {
-            this.operation = firstNumber + secondNumber;
-            this.operationString = "(" + firstNumber + "+" + secondNumber + ")";
+            this.value = first.getValue() + second.getValue();
+            this.operationString = "(" + first.getOperationString() + "+" + second.getOperationString() + ")";
         } else if (operator.equals("-")) {
-            this.operation = firstNumber - secondNumber;
-            this.operationString = "(" + firstNumber + "-" + secondNumber + ")";
+            this.value = first.getValue() - second.getValue();
+            this.operationString = "(" + first.getOperationString() + "-" + second.getOperationString() + ")";
         }else if (operator.equals("*")) {
-            this.operation = firstNumber * secondNumber;
-            this.operationString = "(" + firstNumber + "*" + secondNumber + ")";
+            this.value = first.getValue() * second.getValue();
+            this.operationString = "(" + first.getOperationString() + "*" + second.getOperationString() + ")";
         }else if (operator.equals("/")) {
-            this.operation = firstNumber / secondNumber;
-            this.operationString = "(" + firstNumber + "/" + secondNumber + ")";
+            this.value = first.getValue() / second.getValue();
+            this.operationString = "(" + first.getOperationString() + "/" + second.getOperationString() + ")";
         }
     }
 
-    public Operation(Operation firstOperation, double secondNumber, String operator) {
-        if (operator.equals("+")) {
-            this.operation = firstOperation.getOperation() + secondNumber;
-            this.operationString = "(" + firstOperation.getOperationString() + "+" + secondNumber + ")";
-        } else if (operator.equals("-")) {
-            this.operation = firstOperation.getOperation() - secondNumber;
-            this.operationString = "(" + firstOperation.getOperationString() + "-" + secondNumber + ")";
-        }else if (operator.equals("*")) {
-            this.operation = firstOperation.getOperation() * secondNumber;
-            this.operationString = "(" + firstOperation.getOperationString() + "*" + secondNumber + ")";
-        }else if (operator.equals("/")) {
-            this.operation = firstOperation.getOperation() / secondNumber;
-            this.operationString = "(" + firstOperation.getOperationString() + "/" + secondNumber + ")";
-        }
-    }
-
-    public Operation(double firstNumber, Operation secondOperation, String operator) {
-        if (operator.equals("+")) {
-            this.operation = firstNumber + secondOperation.getOperation();
-            this.operationString = "(" + firstNumber + "+" + secondOperation.getOperationString() + ")";
-        } else if (operator.equals("-")) {
-            this.operation = firstNumber - secondOperation.getOperation();
-            this.operationString = "(" + firstNumber + "-" + secondOperation.getOperationString() + ")";
-        }else if (operator.equals("*")) {
-            this.operation = firstNumber * secondOperation.getOperation();
-            this.operationString = "(" + firstNumber + "*" + secondOperation.getOperationString() + ")";
-        }else if (operator.equals("/")) {
-            this.operation = firstNumber / secondOperation.getOperation();
-            this.operationString = "(" + firstNumber + "/" + secondOperation.getOperationString() + ")";
-        }
-    }
-
-    public Operation(Operation firstOperation, Operation secondOperation, String operator) {
-        if (operator.equals("+")) {
-            this.operation = firstOperation.getOperation() + secondOperation.getOperation();
-            this.operationString = "(" + firstOperation.getOperationString() + "+" + secondOperation.getOperationString() + ")";
-        } else if (operator.equals("-")) {
-            this.operation = firstOperation.getOperation() - secondOperation.getOperation();
-            this.operationString = "(" + firstOperation.getOperationString() + "-" + secondOperation.getOperationString() + ")";
-        }else if (operator.equals("*")) {
-            this.operation = firstOperation.getOperation() * secondOperation.getOperation();
-            this.operationString = "(" + firstOperation.getOperationString() + "*" + secondOperation.getOperationString() + ")";
-        }else if (operator.equals("/")) {
-            this.operation = firstOperation.getOperation() / secondOperation.getOperation();
-            this.operationString = "(" + firstOperation.getOperationString() + "/" + secondOperation.getOperationString() + ")";
-        }
-    }
-
-
-    public double getOperation() {
-        return operation;
+    public double getValue() {
+        return value;
     }
 
     public String getOperationString() {
         return operationString;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Operation operation = (Operation) o;
+        return Double.compare(operation.value, value) == 0 &&
+                Objects.equals(operationString, operation.operationString);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, operationString);
+    }
+
+    @Override
+    public String toString() {
+        return this.getOperationString();
     }
 }

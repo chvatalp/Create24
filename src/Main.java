@@ -3,16 +3,17 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        CheckInputs checkInputs = new CheckInputs();
+        InputProcessor inputProcessor = new InputProcessor();
 
-        ArrayList<Double> numbers = checkInputs.parseInputToNumbers(args);
-        double target = checkInputs.parseInputToResult(args);
+        ArrayList<Double> numbers = inputProcessor.parseInputToNumbers(args);
+        Double target = inputProcessor.parseInputToResult(args);
 
-        List<List<Double>> permutations = checkInputs.permutations(numbers);
-//        List<Combination>
-//        for (List<Double> permutation : permutations) {
-//            for (int i = 0; i < permutation.size(); i++)
-//        }
+        List<List<Double>> permutations = inputProcessor.permutations(numbers);
 
+        CombinationProcessor combinationProcessor = new CombinationProcessor();
+        combinationProcessor.processCombinations(permutations);
+        combinationProcessor.getResults(target);
+
+        combinationProcessor.printResults();
     }
 }

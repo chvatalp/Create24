@@ -1,47 +1,73 @@
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Combination {
-    private HashMap<Long, Operation> combinations;
+    private HashMap<Double, Operation> combinations;
 
-    public Combination(double firstNumber, double secondNumber) {
-        // objekt ukladajici dvojici vysledek a operace - pro jednoduche vyhodnoceni
+    public Combination(Operation first, Operation second) {
         this.combinations = new HashMap<>();
         List<String> operators = List.of("+", "-", "*", "/");
         for (String operator : operators) {
-            Operation operation = new Operation(firstNumber, secondNumber, operator);
-            Long result = Math.round(operation.getOperation());
-            this.combinations.put(result, operation);
+            Double result = Math.round(new Operation(first, second, operator).getValue()*1000)/1000d;
+            this.combinations.put(result, new Operation(first, second, operator));
         }
     }
 
-    public Combination(Operation firstOperation, double secondNumber) {
+    Combination(Operation first, Combination second) {
         this.combinations = new HashMap<>();
-        List<String> operators = List.of("+", "-", "*", "/");
-        for (String operator : operators) {
-            Operation operation = new Operation(firstOperation, secondNumber, operator);
-            Long result = Math.round(operation.getOperation());
-            this.combinations.put(result, operation);
+        for (Operation operation : second.getCombinations().values()) {
+            List<String> operators = List.of("+", "-", "*", "/");
+            for (String operator : operators) {
+                Double result = Math.round(new Operation(first, operation, operator).getValue() * 1000)/1000d;
+                this.combinations.put(result, new Operation(first, operation, operator));
+            }
         }
     }
 
-    public Combination(double firstNumber, Operation secondOperation) {
+    Combination(Combination first, Operation second) {
         this.combinations = new HashMap<>();
         List<String> operators = List.of("+", "-", "*", "/");
-        for (String operator : operators) {
-            Operation operation = new Operation(firstNumber, secondOperation, operator);
-            Long result = Math.round(operation.getOperation());
-            this.combinations.put(result, operation);
+        for (Operation operation : first.getCombinations().values()) {
+            for (String operator : operators) {
+                Double result = Math.round(new Operation(operation, second, operator).getValue()*1000)/1000d;
+                this.combinations.put(result, new Operation(operation, second, operator));
+            }
         }
     }
 
-    public Combination(Operation firstOperation, Operation secondOperation) {
+    Combination(Combination first, Combination second) {
         this.combinations = new HashMap<>();
         List<String> operators = List.of("+", "-", "*", "/");
-        for (String operator : operators) {
-            Operation operation = new Operation(firstOperation, secondOperation, operator);
-            Long result = Math.round(operation.getOperation());
-            this.combinations.put(result, operation);
+        for (Operation firstOperation : first.getCombinations().values()) {
+            for (Operation secondOperation : second.getCombinations().values()) {
+                for (String operator : operators) {
+                    Double result =
+                            Math.round(new Operation(firstOperation, secondOperation, operator).getValue()*1000)/1000d;
+                    this.combinations.put(result, new Operation(firstOperation, secondOperation, operator));
+                }
+            }
         }
+    }
+
+    public HashMap<Double, Operation> getCombinations() {
+        return this.combinations;
+    }
+
+    public void printResults(List<Double> permutation) {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Combination that = (Combination) o;
+        return Objects.equals(combinations, that.combinations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(combinations);
     }
 }

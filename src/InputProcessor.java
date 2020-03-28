@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckInputs {
+public class InputProcessor {
 
     public ArrayList<Double> parseInputToNumbers(String[] args) {
         // prevadi vstup na list
@@ -13,7 +13,7 @@ public class CheckInputs {
         return numbers;
     }
 
-    public double parseInputToResult(String[] args) {
+    public Double parseInputToResult(String[] args) {
         // prevadi vstupy na double
         return Double.valueOf(args[args.length - 1]);
     }
